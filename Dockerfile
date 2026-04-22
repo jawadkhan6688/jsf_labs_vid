@@ -1,8 +1,9 @@
 FROM node:22-bookworm-slim
 
-# Install FFmpeg via apt
+# Install FFmpeg and verify
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ffmpeg && \
+    ffmpeg -version && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
