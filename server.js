@@ -18,7 +18,12 @@ app.use(cors({
 app.use(express.json());
 
 app.get("/health", (req, res) => {
-  res.json({ status: "ok", ffmpeg: process.env.FFMPEG_PATH ?? "ffmpeg" });
+  try {
+    const version = execSync("ffmpeg -version 2>&1").toString().split("\n")[0];
+    res.json({ status: "ok", ffmpeg: version });
+  } catch {
+    res.status(500).json({ status: "error", ffmpeg: "not found" });
+  }
 });
 
 app.post("/trim", async (req, res) => {
